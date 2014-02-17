@@ -1,4 +1,4 @@
-class Network::Resolver::Linux::Ip < Network::Resolver::Linux
+class Network::Resolver::Linux::Ip
 
   def ip(version)
     case version

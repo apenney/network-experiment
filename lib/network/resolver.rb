@@ -1,11 +1,10 @@
 require 'facter'
-require 'network/resolver/linux'
 
-class Network::Resolver
+module Network::Resolver
 
   case Facter.osfamily
-    when 'Linux'
-      include Network::Resolver::Linux
+  when 'Linux'
+    extends Network::Resolver::Linux
   end
 
 end
