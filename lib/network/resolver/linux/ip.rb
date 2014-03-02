@@ -2,11 +2,9 @@ class Network::Resolver::Linux::Ip
   require 'ipaddr'
 
   attr_accessor :interface
-  attr_reader :ips
 
   def initialize(interface)
     @interface = interface
-    @ips       = ipaddresses
   end
 
   def output
@@ -14,7 +12,7 @@ class Network::Resolver::Linux::Ip
     @output
   end
 
-  def ipaddresses
+  def ips
     ips = output.scan(ip_regex).flatten
     addresses = ips.map do |ip|
       Network::IPaddress.new(ip, self)
@@ -28,7 +26,7 @@ class Network::Resolver::Linux::Ip
   end
 
   def mtu
-    output.scan(mtu_regex).flatten
+    output.match(mtu_regex)[1]
   end
 
   def alias?(ip)
