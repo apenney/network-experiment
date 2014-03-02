@@ -1,8 +1,7 @@
 require 'network/version'
+require 'network/ipaddress'
 require 'network/interface'
 require 'network/resolver'
-require 'network/resolver/linux'
-require 'network/resolver/linux/ip'
 
 module Network
 
