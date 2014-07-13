@@ -6,7 +6,7 @@ describe 'Network::Resolver' do
   let(:resolver) { Network::Resolver::Linux::Ifconfig.new('eth0') }
 
   before :each do
-    resolver.stub(:output) { File.read('spec/fixtures/linux_ifconfig_eth0_with_ipv6') }
+    allow(resolver).to receive(:output) { File.read('spec/fixtures/linux_ifconfig_eth0_with_ipv6') }
   end
 
   describe '#ips' do
@@ -30,7 +30,7 @@ describe 'Network::Resolver' do
 
   describe '#aliased?' do
     it 'should return false' do
-      expect(resolver.aliased?('198.245.51.174')).to be_false
+      expect(resolver.aliased?('198.245.51.174')).to be_falsey
     end
   end
 

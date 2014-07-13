@@ -46,7 +46,7 @@ class Network::Resolver::Linux::Ifconfig
   end
 
   def macaddress_regex
-    /link\/ether\s((\w{1,2}:?){6})/
+    /HWaddr\s(.*)$/
   end
 
   def mtu_regex

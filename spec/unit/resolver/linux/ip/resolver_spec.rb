@@ -6,7 +6,7 @@ describe 'Network::Resolver' do
   let(:resolver) { Network::Resolver::Linux::Ip.new('eth0') }
 
   before :each do
-    resolver.stub(:output) { File.read('spec/fixtures/linux_ip_eth0_multiple') }
+    allow(resolver).to receive(:output) { File.read('spec/fixtures/linux_ip_eth0_multiple') }
   end
 
   describe '#ips' do
@@ -30,7 +30,7 @@ describe 'Network::Resolver' do
 
   describe '#alias?' do
     it 'should return false' do
-      expect(resolver.alias?('198.245.51.174')).to be_false
+      expect(resolver.alias?('198.245.51.174')).to be_falsey
     end
   end
 

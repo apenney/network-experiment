@@ -21,7 +21,7 @@ class Network::IPaddress
     @macaddress ||= macaddress
   end
 
-  def aliased=(aliased=@resolver.alias)
+  def aliased=(aliased=@resolver.alias(@ip))
     @aliased ||= aliased
   end
 
