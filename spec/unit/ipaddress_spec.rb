@@ -2,30 +2,17 @@ require 'spec_helper'
 require 'network'
 
 describe 'Network::IPaddress' do
+
+  hash = { ip: '10.10.10.10', netmask: '255.255.255.0', mtu: '1500',
+           aliased: true, macaddress: 'ff:ff:ff:ff:ff:ff:ff:ff' }
   let(:resolver) { double("Network::Resolver::Linux::Ip") }
-  subject { Network::IPaddress.new('10.10.10.10', resolver) }
+  subject { Network::IPaddress.new(hash[:ip], hash[:netmask], resolver) }
 
-  it 'should return a name' do
-    expect(subject.name).to eq('10.10.10.10')
+  hash.each do |k,v|
+    it "should return #{k}" do
+      subject.send("#{k}=",v)
+      expect(subject.send(k)).to eq(v)
+    end
   end
 
-  it 'should return an interface' do
-    subject.netmask = 'eth0'
-    expect(subject.netmask).to eq('eth0')
-  end
-
-  it 'should return a netmask' do
-    subject.netmask = '255.255.255.0'
-    expect(subject.netmask).to eq('255.255.255.0')
-  end
-
-  it 'should return a mtu' do
-    subject.mtu = '1500'
-    expect(subject.mtu).to eq('1500')
-  end
-
-  it 'should return aliased?' do
-    subject.aliased = true
-    expect(subject.aliased?).to be_true
-  end
 end

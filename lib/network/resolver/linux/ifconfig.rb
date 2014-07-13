@@ -1,5 +1,5 @@
-class Network::Resolver::Linux::Ip
-  require 'ipaddr'
+class Network::Resolver::Linux::Ifconfig
+  require 'resolv'
 
   attr_accessor :interface
 
@@ -8,7 +8,7 @@ class Network::Resolver::Linux::Ip
   end
 
   def output
-    @output ||= Facter::Util::Resolution.exec("/sbin/ip addr show #{@interface}")
+    @output ||= Facter::Util::Resolution.exec("/sbin/ifconfig #{@interface}")
   end
 
   def ips
@@ -17,12 +17,8 @@ class Network::Resolver::Linux::Ip
   end
 
   def netmask(ip)
-    if ip.match(Resolv::IPv4::Regex)
-      mask = output.match(netmask_regex(ip))[1]
-      return IPAddr.new('255.255.255.255').mask(mask).to_s
-    else
-      return output.match(netmask_regex(ip))[1]
-    end
+    regex = netmask_regex(ip)
+    return output.match(regex)[1]
   end
 
   def mtu
@@ -33,16 +29,20 @@ class Network::Resolver::Linux::Ip
     output.match(macaddress_regex)[1]
   end
 
-  def alias?(ip)
+  def aliased?(ip)
     output.match(alias_regex(ip)) ? true : false
   end
 
   def ip_regex
-    /inet6?\s(.*)\/+/
+    /addr:\s?(.*?)[\s|\/]/
   end
 
   def netmask_regex(ip)
-    /#{ip}\/(\d+)/
+    if ip.match(Resolv::IPv4::Regex)
+      /#{ip}.*Mask:(.*)$/
+    elsif ip.match(Resolv::IPv6::Regex)
+      /inet6 addr:\s.*?\/(\d+)/
+    end
   end
 
   def macaddress_regex
@@ -50,7 +50,7 @@ class Network::Resolver::Linux::Ip
   end
 
   def mtu_regex
-    /mtu (\d+)/
+    /MTU:(\d+)/
   end
 
   def alias_regex(ip)

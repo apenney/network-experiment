@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Network::VERSION
   spec.authors       = ["Ashley Penney"]
   spec.email         = ["ashley.penney@puppetlabs.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Library to return network information..}
+  spec.description   = %q{Library to abstract away OS differences for network information.}
   spec.homepage      = ""
   spec.license       = "MIT"
 

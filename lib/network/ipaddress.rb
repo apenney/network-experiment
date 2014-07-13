@@ -1,15 +1,12 @@
 class Network::IPaddress
 
-  attr_accessor :name
-  attr_reader   :resolver, :netmask, :interface, :mtu
+  attr_accessor :ip, :netmask
+  attr_reader   :resolver, :macaddress, :interface, :mtu, :aliased
 
-  def initialize(name, resolver)
-    @name     = name
+  def initialize(ip, netmask, resolver)
+    @ip       = ip
+    @netmask  = netmask
     @resolver = resolver
-  end
-
-  def netmask=(netmask=@resolver.netmask(@name))
-    @netmask ||= netmask
   end
 
   def interface=(interface=@resolver.interface)
@@ -18,6 +15,10 @@ class Network::IPaddress
 
   def mtu=(mtu=@resolver.mtu)
     @mtu ||= mtu
+  end
+
+  def macaddress=(macaddress=@resolver.macaddress)
+    @macaddress ||= macaddress
   end
 
   def aliased=(aliased=@resolver.alias)

@@ -3,22 +3,22 @@ require 'network'
 
 describe 'Network::Resolver' do
 
-  let(:resolver) { Network::Resolver::Linux::Ip.new('eth0') }
+  let(:resolver) { Network::Resolver::Linux::Ifconfig.new('eth0') }
 
   before :each do
-    resolver.stub(:output) { File.read('spec/fixtures/linux_ip_eth0_multiple') }
+    resolver.stub(:output) { File.read('spec/fixtures/linux_ifconfig_eth0_with_ipv6') }
   end
 
   describe '#ips' do
     it 'should return appropriate objects' do
       expect(resolver.ips.map { |obj| obj.ip })
-        .to eq(["198.245.51.174", "10.50.50.50", "2607:5300:60:6ae::1", "fe80::4e72:b9ff:fe24:7d28"])
+        .to eq(["131.252.209.153", "2610:10:20:209:212:3fff:febe:2201", "fe80::212:3fff:febe:2201"])
     end
   end
 
   describe '#netmask' do
     it 'should return a netmask' do
-      expect(resolver.netmask('198.245.51.174')).to eq('255.255.255.0')
+      expect(resolver.netmask('131.252.209.153')).to eq('255.255.255.0')
     end
   end
 
@@ -28,9 +28,9 @@ describe 'Network::Resolver' do
     end
   end
 
-  describe '#alias?' do
+  describe '#aliased?' do
     it 'should return false' do
-      expect(resolver.alias?('198.245.51.174')).to be_false
+      expect(resolver.aliased?('198.245.51.174')).to be_false
     end
   end
 
